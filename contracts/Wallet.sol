@@ -26,7 +26,8 @@ contract IWallet  {
        Users storage user1 = user[msg.sender];
        user1.owner = msg.sender; 
        user1.accountBalance += initialDeposit; 
-       user1.currentIBalance += investAmount;       
+       user1.currentIBalance += investAmount;
+       invest();       
        emit Deposit(msg.sender, msg.value);
    }
 
@@ -41,7 +42,7 @@ contract IWallet  {
 
    }
 
-    function invest() payable external{
+    function invest() payable public{
         require(msg.value == investAmount, "invalid amount");
         investTime = block.timestamp;
         Users storage user1 = user[msg.sender];
@@ -64,6 +65,7 @@ contract IWallet  {
 //         // require(block.timestamp - investTime >= 20 seconds , "cant withdraw now");
     function withdrawInvestment(uint amount) external {
         Users storage user1 = user[msg.sender];
+        require(user1.hasEarned == true, "have not earned yet");
         require(amount <= user1.currentIBalance, "invalid amount");
         user1.currentIBalance = user1.currentIBalance - amount;
         user1.accountBalance = user1.accountBalance + amount;    
