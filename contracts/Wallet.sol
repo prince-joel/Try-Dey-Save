@@ -15,6 +15,10 @@ contract IWallet  {
         uint  currentIBalance;
         bool hasEarned;
     }
+ 
+    constructor() public {
+
+    }
 
     mapping(address => Users) public user;
     
